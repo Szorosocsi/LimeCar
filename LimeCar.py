@@ -201,9 +201,6 @@ show_main_menu()
 run_game()
 pygame.quit()
 """
-from pygments.console import dark_colors
-from pygments.styles.gh_dark import BLUE_1, BLUE_2, PURPLE_2
-from ursina.color import black
 
 """
 
@@ -683,6 +680,12 @@ import pygame
 import random
 import sys
 
+
+from pygments.console import dark_colors
+from pygments.styles.gh_dark import BLUE_1, BLUE_2, PURPLE_2
+from ursina.color import black
+
+
 pygame.init()
 
 pygame.mixer.init()
@@ -727,18 +730,20 @@ road_x = (WIDTH - road_width) // 2
 road_y = 0
 road_height = HEIGHT * 2
 
+
+
 stripe_width, stripe_height, stripe_gap = 10, 70, 60
 num_stripes = int(HEIGHT / (stripe_height + stripe_gap)) + 2
-stripe_y_offsets = [i * (stripe_height + stripe_gap) for i in range(num_stripes)]
+# stripe_y_offsets = [i * (stripe_height + stripe_gap) for i in range(num_stripes)]
 #________________________________________________________________________
 # ez lényegében a stripe_y_offset sor érthetően
-"""
+
 stripe_y_offsets = []  # lista, ami minden csík függőleges pozícióját tartalmazza
 
 for i in range(num_stripes):
     y = i * (stripe_height + stripe_gap)  # minden csík lejjebb kerül egy egységgel
     stripe_y_offsets.append(y)            # hozzáadjuk a pozíciót a listához
-"""
+
 #________________________________________________________________________
 
 lime_width, lime_height = 30, 30
@@ -758,16 +763,22 @@ def draw_speedometer(surface, x, y, radius, speed, max_speed):
 
     # Skálák rajzolása (pl. 10 osztás)
     for i in range(11):
-        angle = (135 + i * 27) * (3.14159 / 180)  # 135° -tól 405°-ig (270 fok)
+        angle = (315 + i * 27) * (3.14159 / 180) #(3.14159 / 180)  # 135° -tól 405°-ig (270 fok)
         inner = (int(x + (radius - 10) * -pygame.math.Vector2(1, 0).rotate_rad(angle).x),
-                 int(y + (radius - 10) * -pygame.math.Vector2(1, 0).rotate_rad(angle).y))
+                 int(y + (radius - 10) * -pygame.math.Vector2(1, 0).rotate_rad(angle).y)
+                 )
         outer = (int(x + radius * -pygame.math.Vector2(1, 0).rotate_rad(angle).x),
-                 int(y + radius * -pygame.math.Vector2(1, 0).rotate_rad(angle).y))
-        pygame.draw.line(surface, WHITE, inner, outer, 3)
+                 int(y + radius * -pygame.math.Vector2(1, 0).rotate_rad(angle).y)
+                 )
+        pygame.draw.line(surface, WHITE, inner, outer, 3)  # speedometer vonal vastagsaga
+
+        #print(f"{outer}\n{inner}\n{angle}")
+        
+
 
     # Mutató szöge (135° + speed arányban)
     speed_ratio = min(speed / max_speed, 1.0)
-    pointer_angle_deg = 135 + 270 * speed_ratio
+    pointer_angle_deg = 300 + 270 * speed_ratio
     pointer_angle_rad = pointer_angle_deg * 3.14159 / 180
     pointer_length = radius - 15
 
